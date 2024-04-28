@@ -6,24 +6,24 @@ type Props = {
   title: string
   tasks: Array<TasksProps>
   removeTaskCb: (taskId: string) => void
-  changeFilterCB:(filter:FilterValues)=>void
-  addTaskCB:(title:string)=>void
+  changeFilterCB: (filter: FilterValues) => void
+  addTaskCB: (title: string) => void
 }
 
-export const Todolist = ({title, tasks, removeTaskCb,changeFilterCB,addTaskCB}: Props) => {
+export const Todolist = ({title, tasks, removeTaskCb, changeFilterCB, addTaskCB}: Props) => {
   const [taskTitle, setTaskTitle] = useState("")
-  const inputRef = useRef<HTMLInputElement>(null)
-
+  const addTaskHandler = () => {
+    addTaskCB(taskTitle)
+    setTaskTitle("")
+  }
   return (
     <div>
       <h3>{title}</h3>
       <div>
-        <input ref={inputRef}/>
-        <Button title={"+"} onClick={()=>{
-          if(inputRef.current){
-            addTaskCB(inputRef.current.value)
-          }
-        }}/>
+        <input value={taskTitle}
+               onChange={(e) => setTaskTitle(e.currentTarget.value)}/>
+        <Button title={"+"}
+                onClick={addTaskHandler}/>
       </div>
       {tasks.length === 0 ? (
         <p>Tasks not display</p>
@@ -42,9 +42,9 @@ export const Todolist = ({title, tasks, removeTaskCb,changeFilterCB,addTaskCB}: 
         </ul>
       )}
       <>
-        <Button title={"All"} onClick={()=>changeFilterCB("all")}/>
-        <Button title={"Active"} onClick={()=>changeFilterCB("active")}/>
-        <Button title={"Completed"} onClick={()=>changeFilterCB("completed")}/>
+        <Button title={"All"} onClick={() => changeFilterCB("all")}/>
+        <Button title={"Active"} onClick={() => changeFilterCB("active")}/>
+        <Button title={"Completed"} onClick={() => changeFilterCB("completed")}/>
       </>
     </div>
   );
